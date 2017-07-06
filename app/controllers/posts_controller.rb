@@ -12,18 +12,26 @@ class PostsController < ApplicationController
 	end
 
 	def create
-	  @post = Post.new(params["post"])
+		@post = Post.new(post_params)
 	  @post.save
-	  redirect_to post_path(@post)
-	end
+	  redirect_to post_path(@post)	end
 
 	def update
-	  @post = Post.find(params[:id])
-	  @post.update(params["post"])
+		@post = Post.find(params[:id])
+	  @post.update(post_params)
 	  redirect_to post_path(@post)
 	end
 
 	def edit
 	  @post = Post.find(params[:id])
 	end
+
+	private
+
+	def post_params
+	  params.require(:post).permit(:title, :description)
+		# NOTE replacing the above line with the one below allows you to customize what params each method above accepts
+		# params.require(:post).permit(*args)
+	end
+
 end
